@@ -15,7 +15,7 @@ const geistMono = Fragment_Mono({
 
 export const metadata: Metadata = {
   title: "Maybe Found",
-  description: "Your 404 page should not be dumb",
+  description: "Your 404 page should be smart",
   icons: {
     icon: [
       {

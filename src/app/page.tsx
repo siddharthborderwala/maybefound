@@ -7,17 +7,28 @@ import ShikiHighlighter from "react-shiki";
 export default function Home() {
   return (
     <>
-      <header className="max-w-7xl mx-auto border border-y-0 p-6">
-        <Image
-          src="/logo.svg"
-          alt="Maybe Found"
-          className="w-8 h-8"
-          width={40}
-          height={40}
-        />
+      <header className="max-w-7xl mx-auto border border-y-0 p-6 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <Image
+            src="/logo.svg"
+            alt="Maybe Found"
+            className="w-8 h-8"
+            width={40}
+            height={40}
+          />
+          <p className="font-semibold text-[#FBEBE3] leading-4.5">
+            Maybe <br /> Found
+          </p>
+        </div>
+        <div className="flex items-center gap-4">
+          <Button variant="link" className="h-9.5">
+            Docs
+          </Button>
+          <Button>Get Started</Button>
+        </div>
       </header>
       <main className="border-t">
-        <section className="max-w-7xl mx-auto flex items-center justify-between border border-y-0">
+        <section className="px-12 max-w-7xl mx-auto flex items-center justify-between border border-y-0 h-[calc(100dvh-5.25rem)]">
           <div>
             <h1 className="text-5xl max-w-sm">Your 404 page should be smart</h1>
             <p className="text-lg max-w-sm mt-4">
