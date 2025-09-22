@@ -1,20 +1,33 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Familjen_Grotesk, Fragment_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const geistSans = Familjen_Grotesk({
+  variable: "--font-familijen-grotesk",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const geistMono = Fragment_Mono({
+  variable: "--font-fragment-mono",
+  weight: "400",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
   title: "Maybe Found",
   description: "Your 404 page should not be dumb",
+  icons: {
+    icon: [
+      {
+        url: "/favicon.ico",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        url: "/favicon-dark.ico",
+        media: "(prefers-color-scheme: dark)",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
