@@ -1,10 +1,30 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import ShikiHighlighter from "react-shiki";
+import { codeToHtml } from "shiki";
 
-export default function Home() {
+const code = `
+const response = fetch(
+  \`https://maybefound.com/api/match?url=\${url}\`,
+  {
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer <your-api-key>"
+    },
+  }
+);
+
+const data = await response.json();
+`.trim();
+
+const numberOfLines = code.split("\n").length;
+const numDigits = Math.floor(Math.log10(numberOfLines)) + 1;
+
+export default async function Home() {
+  const out = await codeToHtml(code, {
+    lang: "ts",
+    theme: "github-dark-default",
+  });
+
   return (
     <>
       <header className="max-w-7xl mx-auto border border-y-0 p-6 flex items-center justify-between">
@@ -16,7 +36,7 @@ export default function Home() {
             width={40}
             height={40}
           />
-          <p className="font-semibold text-[#FBEBE3] leading-4.5">
+          <p className="font-semibold leading-4.5">
             Maybe <br /> Found
           </p>
         </div>
@@ -42,28 +62,18 @@ export default function Home() {
               </Button>
             </div>
           </div>
-          <div>
-            <ShikiHighlighter
-              language="jsx"
-              theme="github-dark-default"
-              className="[&>pre.shiki]:!bg-background border"
-              showLineNumbers={true}
-              showLanguage={false}
-            >
-              {`
-const response = fetch(
-  \`maybefound.com/api/match?url=\${url}\`,
-  {
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer <your-api-key>",
-    },
-  }
-);
-
-const data = await response.json();
-            `.trim()}
-            </ShikiHighlighter>
+          <div className="relative">
+            <div
+              className="[&>pre.shiki]:!bg-background border py-6 pr-6 [counter-reset:line] [&_.line]:[counter-increment:line] [&_.line]:before:content-[counter(line)] [&_.line]:before:absolute [&_.line]:before:-left-[calc(var(--line-number-width)+1.25rem)] [&_.line]:before:text-foreground/50 [&_.line]:before:text-right [&_.line]:before:select-none [&_.line]:relative [&_.line]:before:w-[var(--line-number-width)] [&_.line]:before:top-0 [&_.line]:before:[line-height:1.5]"
+              style={
+                {
+                  paddingLeft: `calc(${numDigits}ch + 3rem)`,
+                  counterReset: "line",
+                  "--line-number-width": `${numDigits}ch`,
+                } as React.CSSProperties & { "--line-number-width": string }
+              }
+              dangerouslySetInnerHTML={{ __html: out }}
+            />
           </div>
         </section>
       </main>
