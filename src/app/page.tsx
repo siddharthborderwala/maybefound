@@ -63,6 +63,9 @@ export default async function Home() {
             </div>
           </div>
           <div className="relative">
+            <div>
+              <Button variant="secondary">JavaScript</Button>
+            </div>
             <div
               className="[&>pre.shiki]:!bg-background border py-6 pr-6 [counter-reset:line] [&_.line]:[counter-increment:line] [&_.line]:before:content-[counter(line)] [&_.line]:before:absolute [&_.line]:before:-left-[calc(var(--line-number-width)+1.25rem)] [&_.line]:before:text-foreground/50 [&_.line]:before:text-right [&_.line]:before:select-none [&_.line]:relative [&_.line]:before:w-[var(--line-number-width)] [&_.line]:before:top-0 [&_.line]:before:[line-height:1.5]"
               style={
