@@ -2,10 +2,12 @@ import { z } from "zod/v4";
 
 export const envSchema = z
   .object({
+    DATABASE_URL: z.string(),
     BETTER_AUTH_SECRET: z.string(),
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
-    DATABASE_URL: z.string(),
+    OPENAI_API_KEY: z.string(),
+    FIRECRAWL_API_KEY: z.string(),
   })
   .describe("Environment variables");
 
