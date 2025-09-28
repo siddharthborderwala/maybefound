@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 import { codeToHtml } from "shiki";
 
 const code = `
@@ -44,7 +45,9 @@ export default async function Home() {
           <Button variant="link" className="h-9.5">
             Docs
           </Button>
-          <Button>Get Started</Button>
+          <Button asChild>
+            <Link href="/sign-in">Get Started</Link>
+          </Button>
         </div>
       </header>
       <main className="border-t">
@@ -56,7 +59,9 @@ export default async function Home() {
               function call.
             </p>
             <div className="flex gap-4 mt-6 items-center">
-              <Button>Get Started</Button>
+              <Button asChild>
+                <Link href="/sign-in">Get Started</Link>
+              </Button>
               <Button variant="outline" className="h-9.5">
                 Read Docs
               </Button>

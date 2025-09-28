@@ -4,6 +4,9 @@ import { db } from "@/db";
 import { authSchema } from "@/db/schema";
 
 export const auth = betterAuth({
+  emailAndPassword: {
+    enabled: true,
+  },
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID,
