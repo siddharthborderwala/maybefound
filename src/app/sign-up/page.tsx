@@ -3,26 +3,26 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useState } from "react";
-import { signIn } from "@/lib/auth-client";
+import { signUp, signIn } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/spinner";
 import z, { treeifyError } from "zod/v4";
 
-const signinSchema = z.object({
+const signupSchema = z.object({
   email: z.email("Invalid email address"),
-  password: z.string().min(1, "Password is required"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
 function ErrorMessage({ errors }: { errors: string[] }) {
   return <p className="text-sm text-red-500">{errors.join(", ")}</p>;
 }
 
-export default function SignIn() {
+export default function SignUp() {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<ReturnType<
-    typeof treeifyError<z.infer<typeof signinSchema>>
+    typeof treeifyError<z.infer<typeof signupSchema>>
   > | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -30,7 +30,7 @@ export default function SignIn() {
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const result = signinSchema.safeParse(Object.fromEntries(formData));
+    const result = signupSchema.safeParse(Object.fromEntries(formData));
 
     if (!result.success) {
       setErrors(treeifyError(result.error));
@@ -39,9 +39,10 @@ export default function SignIn() {
     }
 
     try {
-      await signIn.email({
+      await signUp.email({
         email: result.data.email,
         password: result.data.password,
+        name: "",
         callbackURL: "/dashboard",
       });
     } catch (error) {
@@ -76,20 +77,20 @@ export default function SignIn() {
             </p>
           </Link>
           <div className="text-sm text-muted-foreground flex flex-col items-end">
-            <p>New here?</p>
+            <p>Already have an account?</p>
             <Link
               tabIndex={1}
-              href="/sign-up"
+              href="/sign-in"
               className="text-sm text-primary inline-block"
             >
-              Sign up
+              Sign in
             </Link>
           </div>
         </div>
         <div className="py-8 px-6 border-b">
-          <h1 className="text-lg md:text-xl font-bold">Sign In</h1>
+          <h1 className="text-lg md:text-xl font-bold">Sign Up</h1>
           <p className="text-muted-foreground">
-            Sign in to your account to continue
+            Create your account to get started
           </p>
           <div className="grid gap-4 mt-8">
             <form
@@ -107,9 +108,9 @@ export default function SignIn() {
                   <ErrorMessage errors={errors.properties.email.errors} />
                 )}
               </div>
-              <div className="flex flex-col gap-2">
+              <div>
                 <Input
-                  placeholder="Enter your password"
+                  placeholder="Create a strong password"
                   className="h-10"
                   name="password"
                   type="password"
@@ -118,15 +119,9 @@ export default function SignIn() {
                 {errors?.properties?.password?.errors && (
                   <ErrorMessage errors={errors.properties.password.errors} />
                 )}
-                {/* <Link
-                  href="/forgot-password"
-                  className="text-sm text-muted-foreground inline-block self-end"
-                >
-                  Forgot password?
-                </Link> */}
               </div>
               <Button className="h-10" type="submit" disabled={loading}>
-                {loading ? <Spinner /> : "Sign In"}
+                {loading ? <Spinner /> : "Sign Up"}
               </Button>
               {errors?.errors && <ErrorMessage errors={errors.errors} />}
             </form>
