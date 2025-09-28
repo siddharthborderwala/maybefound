@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Familjen_Grotesk, Fragment_Mono } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Familjen_Grotesk({
   variable: "--font-familijen-grotesk",
@@ -41,6 +42,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} dark antialiased font-sans`}
       >
         {children}
+        <Toaster
+          duration={Infinity}
+          toastOptions={{
+            className: "font-sans",
+            classNames: {
+              toast: "!rounded-none !text-base min-h-[3.625rem]",
+            },
+          }}
+        />
       </body>
     </html>
   );

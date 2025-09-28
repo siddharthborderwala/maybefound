@@ -9,6 +9,7 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/spinner";
 import z, { treeifyError } from "zod/v4";
+import { toast } from "sonner";
 
 const signinSchema = z.object({
   email: z.email("Invalid email address"),
@@ -16,11 +17,12 @@ const signinSchema = z.object({
 });
 
 function ErrorMessage({ errors }: { errors: string[] }) {
-  return <p className="text-sm text-red-500">{errors.join(", ")}</p>;
+  return <p className="text-sm text-destructive">{errors.join(", ")}</p>;
 }
 
 export default function SignIn() {
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [errors, setErrors] = useState<ReturnType<
     typeof treeifyError<z.infer<typeof signinSchema>>
   > | null>(null);
@@ -45,15 +47,11 @@ export default function SignIn() {
         callbackURL: "/dashboard",
       });
     } catch (error) {
-      if (error instanceof Error) {
-        setErrors({
-          errors: [error.message],
-        });
-      } else {
-        setErrors({
-          errors: ["An unknown error occurred. Please try again."],
-        });
-      }
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "An unknown error occurred. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -143,7 +141,7 @@ export default function SignIn() {
                 variant="outline"
                 size="lg"
                 className={cn("w-full gap-2")}
-                disabled={loading}
+                disabled={googleLoading || loading}
                 onClick={async () => {
                   await signIn.social(
                     {
@@ -152,16 +150,16 @@ export default function SignIn() {
                     },
                     {
                       onRequest: () => {
-                        setLoading(true);
+                        setGoogleLoading(true);
                       },
                       onResponse: () => {
-                        setLoading(false);
+                        setGoogleLoading(false);
                       },
                     },
                   );
                 }}
               >
-                {loading ? (
+                {googleLoading ? (
                   <Spinner />
                 ) : (
                   <>

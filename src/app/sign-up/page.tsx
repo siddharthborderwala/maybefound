@@ -9,6 +9,7 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/spinner";
 import z, { treeifyError } from "zod/v4";
+import { toast } from "sonner";
 
 const signupSchema = z.object({
   email: z.email("Invalid email address"),
@@ -16,11 +17,12 @@ const signupSchema = z.object({
 });
 
 function ErrorMessage({ errors }: { errors: string[] }) {
-  return <p className="text-sm text-red-500">{errors.join(", ")}</p>;
+  return <p className="text-sm text-destructive">{errors.join(", ")}</p>;
 }
 
 export default function SignUp() {
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [errors, setErrors] = useState<ReturnType<
     typeof treeifyError<z.infer<typeof signupSchema>>
   > | null>(null);
@@ -39,22 +41,21 @@ export default function SignUp() {
     }
 
     try {
-      await signUp.email({
+      const response = await signUp.email({
         email: result.data.email,
         password: result.data.password,
         name: "",
         callbackURL: "/dashboard",
       });
-    } catch (error) {
-      if (error instanceof Error) {
-        setErrors({
-          errors: [error.message],
-        });
-      } else {
-        setErrors({
-          errors: ["An unknown error occurred. Please try again."],
-        });
+      if (response.error) {
+        throw new Error(response.error.message);
       }
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "An unknown error occurred. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -138,7 +139,7 @@ export default function SignUp() {
                 variant="outline"
                 size="lg"
                 className={cn("w-full gap-2")}
-                disabled={loading}
+                disabled={googleLoading || loading}
                 onClick={async () => {
                   await signIn.social(
                     {
@@ -147,16 +148,16 @@ export default function SignUp() {
                     },
                     {
                       onRequest: () => {
-                        setLoading(true);
+                        setGoogleLoading(true);
                       },
                       onResponse: () => {
-                        setLoading(false);
+                        setGoogleLoading(false);
                       },
                     },
                   );
                 }}
               >
-                {loading ? (
+                {googleLoading ? (
                   <Spinner />
                 ) : (
                   <>
