@@ -1,6 +1,5 @@
 import LogoMark from "@/components/logo-mark";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import Link from "next/link";
 import { codeToHtml } from "shiki";
 

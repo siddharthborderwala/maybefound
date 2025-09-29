@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export default function NavLink({
   icon,
@@ -20,7 +21,10 @@ export default function NavLink({
     <Button
       asChild
       variant={isActive ? "outline" : "ghost"}
-      className="w-full justify-start"
+      className={cn(
+        "w-full justify-start",
+        !isActive && "border border-transparent",
+      )}
     >
       <Link href={href}>
         {icon}
