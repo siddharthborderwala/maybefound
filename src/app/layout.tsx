@@ -43,7 +43,7 @@ export default function RootLayout({
       >
         {children}
         <Toaster
-          duration={Infinity}
+          position="bottom-center"
           toastOptions={{
             className: "font-sans",
             classNames: {

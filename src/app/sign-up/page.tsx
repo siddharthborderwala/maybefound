@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/spinner";
 import z, { treeifyError } from "zod/v4";
 import { toast } from "sonner";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 const signupSchema = z.object({
   email: z.email("Invalid email address"),
@@ -23,6 +24,7 @@ function ErrorMessage({ errors }: { errors: string[] }) {
 export default function SignUp() {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<ReturnType<
     typeof treeifyError<z.infer<typeof signupSchema>>
   > | null>(null);
@@ -110,13 +112,33 @@ export default function SignUp() {
                 )}
               </div>
               <div>
-                <Input
-                  placeholder="Create a strong password"
-                  className="h-10"
-                  name="password"
-                  type="password"
-                  required
-                />
+                <div className="relative">
+                  <Input
+                    placeholder="Create a strong password"
+                    className="h-10"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    required
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 size-6"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeIcon
+                        strokeWidth={1}
+                        className="text-primary size-4"
+                      />
+                    ) : (
+                      <EyeOffIcon
+                        strokeWidth={1}
+                        className="text-primary size-4"
+                      />
+                    )}
+                  </Button>
+                </div>
                 {errors?.properties?.password?.errors && (
                   <ErrorMessage errors={errors.properties.password.errors} />
                 )}
