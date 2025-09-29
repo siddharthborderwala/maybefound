@@ -1,3 +1,4 @@
+import LogoMark from "@/components/logo-mark";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
@@ -29,18 +30,7 @@ export default async function Home() {
   return (
     <>
       <header className="max-w-7xl mx-auto border border-y-0 p-6 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <Image
-            src="/logo.svg"
-            alt="Maybe Found"
-            className="w-8 h-8"
-            width={40}
-            height={40}
-          />
-          <p className="font-semibold leading-4.5">
-            Maybe <br /> Found
-          </p>
-        </div>
+        <LogoMark />
         <div className="flex items-center gap-4">
           <Button variant="link" className="h-9.5">
             Docs

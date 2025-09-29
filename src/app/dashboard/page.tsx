@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { signOut } from "@/lib/auth-client";
 import { useState } from "react";
 import { Spinner } from "@/components/spinner";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
   const [loading, setLoading] = useState(false);
